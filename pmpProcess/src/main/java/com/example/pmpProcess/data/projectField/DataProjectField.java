@@ -18,5 +18,15 @@ public class DataProjectField {
     /**
      * 项目知识领域中所涉及到的所有活动
      */
-    LinkedList<DataActivity> fieldActivity = new LinkedList<>();
+    static LinkedList<DataActivity> fieldActivity = new LinkedList<>();
+    /**
+     * 知识域说明
+     */
+    String textDesc;
+
+    public static void addActivity(DataActivity activity) {
+        fieldActivity.add(activity);
+
+        return;
+    }
 }

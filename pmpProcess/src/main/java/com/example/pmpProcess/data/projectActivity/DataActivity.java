@@ -42,4 +42,8 @@ public class DataActivity {
      * 活动的工具列表
      */
     LinkedList<DataTools> toolsList;
+    /**
+     * 活动说明
+     */
+    String textDesc;
 }

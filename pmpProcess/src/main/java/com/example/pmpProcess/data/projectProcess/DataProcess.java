@@ -10,7 +10,7 @@ public class DataProcess {
     /**
      * 项目过程组名称描述
      */
-    String processName;
+    String description;
     /**
      * 项目过程组唯一标识ID信息
      */
@@ -18,5 +18,15 @@ public class DataProcess {
     /**
      * 过程组所涉及到的所有活动
      */
-    LinkedList<DataActivity> processActivity;
+    static LinkedList<DataActivity> processActivity = new LinkedList<>();
+    /**
+     * 过程组说明
+     */
+    String textDesc;
+
+    public static void addActivity(DataActivity activity) {
+        processActivity.add(activity);
+
+        return;
+    }
 }

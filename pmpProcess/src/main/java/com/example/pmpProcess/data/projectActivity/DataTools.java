@@ -12,4 +12,8 @@ public class DataTools {
      * 工具唯一标识ID信息
      */
     String ID;
+    /**
+     * 工具说明
+     */
+    String textDesc;
 }

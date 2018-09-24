@@ -24,6 +24,10 @@ public class DataInput {
      * 本输入是否为必要输出，true表示必要，false表示不必要
      */
     boolean isNeed;
+    /**
+     * 输入说明
+     */
+    String textDesc;
 
     /**
      * 记录输入Id的游标

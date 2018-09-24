@@ -24,4 +24,8 @@ public class DataOutput {
      * 本输出是否为必要输出，true表示必要，false表示不必要
      */
     boolean isNeed;
+    /**
+     * 输出说明
+     */
+    String textDesc;
 }
