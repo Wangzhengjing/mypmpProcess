@@ -64,9 +64,9 @@ public class FieldManager {
      * @return
      * @throws IOException
      */
-    public boolean setProjectFieldConfig() throws IOException {
+    public boolean appendProjectFieldConfig() throws IOException {
         String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\ProjField.txt";
-        FileWriter fileWriter = new FileWriter(fileName);
+        FileWriter fileWriter = new FileWriter(fileName, true);
         int activityCount = projectFieldLinkedList.size();
         for (int i = 0; i < activityCount; i++) {
             DataProjectField dataProjectField = projectFieldLinkedList.get(i);

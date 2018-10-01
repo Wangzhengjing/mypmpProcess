@@ -1,7 +1,6 @@
 package com.example.pmpProcess.dto.projProcess;
 
 import com.example.pmpProcess.data.projectActivity.DataActivity;
-import com.example.pmpProcess.data.projectField.DataProjectField;
 import com.example.pmpProcess.data.projectProcess.DataProcess;
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,9 +64,9 @@ public class ProcessManager {
      * @return
      * @throws IOException
      */
-    public boolean setProcessConfig() throws IOException {
+    public boolean appendProcessConfig() throws IOException {
         String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Process.txt";
-        FileWriter fileWriter = new FileWriter(fileName);
+        FileWriter fileWriter = new FileWriter(fileName, true);
         int activityCount = processLinkedList.size();
         for (int i = 0; i < activityCount; i++) {
             DataProcess dataProcess = processLinkedList.get(i);

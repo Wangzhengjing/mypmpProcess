@@ -13,6 +13,10 @@ public class DataTools {
      */
     String ID;
     /**
+     * 所属活动ID
+     */
+    Integer parentID;
+    /**
      * 工具说明
      */
     String textDesc;

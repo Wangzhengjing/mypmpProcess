@@ -26,7 +26,7 @@ public class ActivityManager {
      * @param activityID 活动ID
      * @return 活动详情
      */
-    public static DataActivity getActivityByID(Integer activityID) {
+    private static DataActivity getActivityByID(Integer activityID) {
         int activityLinkedListSize = activityLinkedList.size();
         for (int i = 0; i < activityLinkedListSize; i++) {
             DataActivity element = activityLinkedList.get(i);
@@ -37,52 +37,6 @@ public class ActivityManager {
         }
 
         return null;
-    }
-
-    /**
-     * 设置活动的输入信息
-     *
-     * @param inputDesc 输入描述
-     * @param actDesc   活动描述
-     * @return 返回数据信息
-     */
-    public DataInput setActInput(String inputDesc, String actDesc) {
-        DataInput dataInput = new DataInput();
-        dataInput.setDescription(inputDesc);
-        dataInput.setId(dataInput.getInputID());
-        dataInput.setParentAct(actDesc);
-
-        return dataInput;
-    }
-
-    /**
-     * 设置活动的输出
-     *
-     * @param outputDesc 输出描述
-     * @param actDesc    活动描述
-     * @return 返回输出信息
-     */
-    public DataOutput setActOutput(String outputDesc, String actDesc) {
-        DataOutput dataOutput = new DataOutput();
-
-        dataOutput.setDescription(outputDesc);
-        dataOutput.setParentAct(actDesc);
-
-        return dataOutput;
-    }
-
-    /**
-     * 设置活动的工具信息
-     *
-     * @param toolsDesc 工具描述
-     * @return 返回工具信息
-     */
-    public DataTools setActTools(String toolsDesc) {
-        DataTools dataTools = new DataTools();
-
-        dataTools.setToolsDescription(toolsDesc);
-
-        return dataTools;
     }
 
     /**
@@ -138,9 +92,9 @@ public class ActivityManager {
      * @return
      * @throws IOException
      */
-    public boolean setActivityConfig() throws IOException {
+    public boolean appendActivityConfig() throws IOException {
         String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Activity.txt";
-        FileWriter fileWriter = new FileWriter(fileName);
+        FileWriter fileWriter = new FileWriter(fileName, true);
         int activityCount = activityLinkedList.size();
         for (int i = 0; i < activityCount; i++) {
             DataActivity dataActivity = activityLinkedList.get(i);
@@ -171,6 +125,9 @@ public class ActivityManager {
         while ((bufferData = bufferedReader.readLine()) != null) {
             log.info(bufferData);
         }
+
+        bufferedReader.close();
+
         return true;
     }
 }
