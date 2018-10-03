@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 @Data
 @Slf4j
@@ -23,9 +24,9 @@ public class FieldManager {
      * @param projectFieldID 知识域ID
      * @return 返回知识域详细信息
      */
-    public static DataProjectField getProjFieldByID(Integer projectFieldID) {
-        int projectFieldLinkedListSize = projectFieldLinkedList.size();
-        for (int i = 0; i < projectFieldLinkedListSize; i++) {
+    public static DataProjectField getProjFieldByID(String projectFieldID) {
+        int LinkedListSize = projectFieldLinkedList.size();
+        for (int i = 0; i < LinkedListSize; i++) {
             DataProjectField element = projectFieldLinkedList.get(i);
             if (element.getID() == projectFieldID) {
                 //TODO 增加日志信息
@@ -42,7 +43,7 @@ public class FieldManager {
      * @param fieldDesc 知识域名称描述
      * @return 返回知识域详细信息
      */
-    public DataProjectField addProjectFieldToList(String fieldDesc, Integer fieldID) {
+    public DataProjectField loadProjectFieldToList(String fieldDesc, String fieldID) {
         DataProjectField dataProjectField = new DataProjectField();
 
         dataProjectField.setProjectField(fieldDesc);
@@ -88,13 +89,30 @@ public class FieldManager {
      * @return
      * @throws IOException
      */
-    public boolean getProjFieldConfig() throws IOException {
+    public boolean parseProjFieldConfig() throws IOException {
         String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\ProjField.txt";
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName),"gbk"));
         String bufferData = null;
 
+        String fieldDesc = "";
+        String fieldID = "";
+
         while ((bufferData = bufferedReader.readLine()) != null) {
-            log.info(bufferData);
+            StringTokenizer stringTokenizer = new StringTokenizer(bufferData);
+            int numTokenizer = stringTokenizer.countTokens();
+            String[] projectFieldInfoList = new String[numTokenizer];
+            int i = 0;
+
+            //按照空格进行解析
+            while (stringTokenizer.hasMoreElements()) {
+                projectFieldInfoList[i] = stringTokenizer.nextToken();
+                i++;
+            }
+            //将解析结果进行处理
+            fieldDesc = projectFieldInfoList[1];
+            fieldID = projectFieldInfoList[0];
+
+            loadProjectFieldToList(fieldDesc, fieldID);
         }
         return true;
     }

@@ -5,7 +5,10 @@ import com.example.pmpProcess.data.projectProcess.DataProcess;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 @Slf4j
 public class ProcessManager {
@@ -14,9 +17,15 @@ public class ProcessManager {
      */
     static LinkedList<DataProcess> processLinkedList = new LinkedList<>();
 
-    public static DataProcess getProcessByID(Integer processID) {
-        int processLinkedListSize = processLinkedList.size();
-        for (int i = 0; i < processLinkedListSize; i++) {
+    /**
+     * 根据过程组ID，从过程组链表获取制定过程组的详细信息
+     *
+     * @param processID
+     * @return
+     */
+    public static DataProcess getProcessByID(String processID) {
+        int LinkedListSize = processLinkedList.size();
+        for (int i = 0; i < LinkedListSize; i++) {
             DataProcess element = processLinkedList.get(i);
             if (element.getID() == processID) {
                 //TODO 增加日志信息
@@ -34,7 +43,7 @@ public class ProcessManager {
      * @param processID   过程组ID
      * @param textDesc    过程组说明信息
      */
-    public static void addProcessToList(String processDesc, Integer processID, String textDesc) {
+    private static void loadProcessToList(String processDesc, String processID, String textDesc) {
 
 
         DataProcess dataProcess = getProcessByID(processID);
@@ -88,14 +97,33 @@ public class ProcessManager {
      * @return
      * @throws IOException
      */
-    public boolean getProcessConfig() throws IOException {
+    public boolean parseProcessConfig() throws IOException {
         String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Process.txt";
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "gbk"));
         String bufferData = null;
 
+        String processDesc = "";
+        String processID = "";
+        String textDesc = "";
+
         while ((bufferData = bufferedReader.readLine()) != null) {
-            log.info(bufferData);
+            StringTokenizer stringTokenizer = new StringTokenizer(bufferData);
+            int numTokenizer = stringTokenizer.countTokens();
+            String[] processInfoList = new String[numTokenizer];
+            int i = 0;
+
+            //按照空格进行解析
+            while (stringTokenizer.hasMoreElements()) {
+                processInfoList[i] = stringTokenizer.nextToken();
+                i++;
+            }
+            //将解析结果进行处理
+            processDesc = processInfoList[1];
+            processID = processInfoList[0];
+
+            loadProcessToList(processDesc, processID, textDesc);
         }
+
         return true;
     }
 

@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.tools.Tool;
 import java.io.IOException;
 
 @RunWith(SpringRunner.class)
@@ -34,25 +33,21 @@ public class PmpProcessApplicationTests {
 		OutputManager outputManager = new OutputManager();
 		ToolsManager toolsManager = new ToolsManager();
 
-		activityManager.addActivityToList(actDesc, 1, fieldDesc, 1, processDesc, 1);
-		fieldManager.addProjectFieldToList(fieldDesc, 1);
-		processManager.addProcessToList(processDesc, 1, processDescText);
-
 		//获取过程组配置信息
-		processManager.getProcessConfig();
+		processManager.parseProcessConfig();
 		//获取知识域配置信息
-		fieldManager.getProjFieldConfig();
+		fieldManager.parseProjFieldConfig();
 		//获取项目活动配置信息
-		activityManager.getActivityConfig();
+		activityManager.parseActivityConfig();
 
 		//配置输入信息
 
 		//配置输出信息
 		//配置工具信息
 
-		inputManager.getInputDefsConfig();
-		outputManager.getOutputDefsConfig();
-		toolsManager.getToolsDefsConfig();
+		inputManager.parseInputDefsConfig();
+		outputManager.parseOutputDefsConfig();
+		toolsManager.parseToolsDefsConfig();
 
 		return;
 	}

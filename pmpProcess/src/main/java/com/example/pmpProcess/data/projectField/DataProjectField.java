@@ -3,6 +3,7 @@ package com.example.pmpProcess.data.projectField;
 import com.example.pmpProcess.data.projectActivity.DataActivity;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 @Data
@@ -14,18 +15,18 @@ public class DataProjectField {
     /**
      * 项目知识领域唯一标识ID信息
      */
-    Integer ID;
+    String ID;
     /**
      * 项目知识领域中所涉及到的所有活动
      */
-    static LinkedList<DataActivity> fieldActivity = new LinkedList<>();
+    static ArrayList<DataActivity> activityArrayList = new ArrayList<>();
     /**
      * 知识域说明
      */
     String textDesc;
 
     public static void addActivity(DataActivity activity) {
-        fieldActivity.add(activity);
+        activityArrayList.add(activity);
 
         return;
     }
