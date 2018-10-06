@@ -17,11 +17,11 @@ public class DataInput {
     /**
      * 所属活动描述
      */
-    String parentAct;
+    String activityDescription;
     /**
      * 所属活动ID
      */
-    String parentActivityID;
+    String activityID;
     /**
      * 本输入是否为必要输出，true表示必要，false表示不必要
      */
@@ -33,7 +33,7 @@ public class DataInput {
     /**
      * 输入对应的项目活动
      */
-    static ArrayList<DataActivity> activityArrayList = new ArrayList<>();
+    ArrayList<DataActivity> activityArrayList;
 
     /**
      * 记录输入Id的游标
@@ -42,20 +42,5 @@ public class DataInput {
 
     public Integer getInputID() {
         return tmpIdCursor++;
-    }
-
-    /**
-     * 向输入中添加项目活动
-     *
-     * @param dataActivity 活动对象
-     */
-    public static void addActivity(DataActivity dataActivity) {
-        activityArrayList.add(dataActivity);
-
-        return;
-    }
-
-    public static ArrayList getActivityArrayList(){
-        return activityArrayList;
     }
 }

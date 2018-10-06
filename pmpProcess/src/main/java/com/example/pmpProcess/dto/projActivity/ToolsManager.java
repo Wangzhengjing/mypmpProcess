@@ -4,6 +4,7 @@ import com.example.pmpProcess.data.projectActivity.DataTools;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -40,11 +41,13 @@ public class ToolsManager {
      * @param id          工具全局唯一标识ID
      * @return 工具对象
      */
-    private DataTools loadToolsToList(String description, String id) {
+    private DataTools loadToolsToList(String description, String id, String activityID) {
         DataTools dataTools = new DataTools();
 
+        dataTools.setActivityArrayList(new ArrayList<>());
         dataTools.setToolsDescription(description);
         dataTools.setID(id);
+        dataTools.setActivityID(activityID);
 
         //向输入链表中添加输入对象
         DataTools toolsEle = getToolsByID(id);
@@ -53,6 +56,9 @@ public class ToolsManager {
         } else {
             //TODO 增加交互性信息
         }
+
+        //将项目工具关联到项目活动
+        ActivityManager.addTools(dataTools);
 
         return dataTools;
     }
@@ -78,17 +84,15 @@ public class ToolsManager {
      * @return
      * @throws IOException
      */
-    public boolean appendToolsConfig() throws IOException {
+    public boolean insertToolsConfig(DataTools dataTools) throws IOException {
         String fileName = ".\\config\\Input.txt";
         FileWriter fileWriter = new FileWriter(fileName, true);
-        int activityCount = ToolsLinkedList.size();
-        for (int i = 0; i < activityCount; i++) {
-            DataTools dataTools = ToolsLinkedList.get(i);
 
-            //x="描述"；ID=输入描述
-            String destString = dataTools.getParentActivityID().toString() + dataTools.getToolsDescription();
-            fileWriter.append(destString, 0, destString.length());
-        }
+        //x.x.x.x=活动ID.工具ID "描述"
+        String destString = dataTools.getActivityID().toString() + "."
+                + dataTools.getID() + "\t"
+                + dataTools.getToolsDescription();
+        fileWriter.append(destString, 0, destString.length());
 
         fileWriter.flush();
         fileWriter.close();
@@ -109,6 +113,8 @@ public class ToolsManager {
 
         String description = "";
         String id = "";
+        String activityID = "";
+        String toolID = "";
 
         while ((bufferData = bufferedReader.readLine()) != null) {
             StringTokenizer stringTokenizer = new StringTokenizer(bufferData);
@@ -125,7 +131,23 @@ public class ToolsManager {
             description = toolsDefsList[1];
             id = toolsDefsList[0];
 
-            loadToolsToList(description, id);
+            //解析项目活动的ID信息
+            StringTokenizer activityIDStrTokenizer = new StringTokenizer(id, ".");
+            numTokenizer = activityIDStrTokenizer.countTokens();
+            String[] activityIDInfoList = new String[numTokenizer];
+            i = 0;
+
+            while (activityIDStrTokenizer.hasMoreElements()) {
+                activityIDInfoList[i] = activityIDStrTokenizer.nextToken();
+                i++;
+            }
+            //处理活动ID的信息
+            activityID = activityIDInfoList[0].toString() + "."
+                    + activityIDInfoList[1].toString() + "."
+                    + activityIDInfoList[2];
+            toolID = activityIDInfoList[3];
+
+            loadToolsToList(description, toolID, activityID);
 
         }
 
@@ -147,6 +169,7 @@ public class ToolsManager {
 
         String description = "";
         String id = "";
+        String activityID = "";
 
         while ((bufferData = bufferedReader.readLine()) != null) {
             StringTokenizer stringTokenizer = new StringTokenizer(bufferData);
@@ -163,7 +186,7 @@ public class ToolsManager {
             description = toolsDefsList[1];
             id = toolsDefsList[0];
 
-            loadToolsToList(description, id);
+            loadToolsToList(description, id, activityID);
         }
 
         bufferedReader.close();

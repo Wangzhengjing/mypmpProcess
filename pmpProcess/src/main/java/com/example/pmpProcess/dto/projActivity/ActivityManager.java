@@ -11,6 +11,7 @@ import com.example.pmpProcess.dto.projProcess.ProcessManager;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -52,6 +53,9 @@ public class ActivityManager {
                                            String fieldID, String processDesc, String processID) {
         DataActivity dataActivity = new DataActivity();
 
+        dataActivity.setInputList(new ArrayList<>());
+        dataActivity.setOutputList(new ArrayList<>());
+        dataActivity.setToolsList(new ArrayList<>());
         dataActivity.setDescription(actDesc);
         dataActivity.setID(actID);
         dataActivity.setParentField(fieldDesc);
@@ -73,7 +77,7 @@ public class ActivityManager {
             //TODO 增加日志信息
         } else {
             //添加活动到知识域链表
-            FieldManager.addActivity(dataActivity);
+            dataProjectField.getActivityArrayList().add(dataActivity);
         }
 
         //将活动加入过程组链表
@@ -81,7 +85,8 @@ public class ActivityManager {
         if (dataProcess == null) {
             //TODO 增加日志信息
         } else {
-            ProcessManager.addActivity(dataActivity);
+            log.info(dataProcess.getID());
+            dataProcess.getActivityArrayList().add(dataActivity);
         }
 
         return dataActivity;
@@ -147,7 +152,7 @@ public class ActivityManager {
             actID = activityInfoList[0];
 
             //解析项目活动的ID信息
-            StringTokenizer activityIDStrTokenizer = new StringTokenizer(actID);
+            StringTokenizer activityIDStrTokenizer = new StringTokenizer(actID, ".");
             numTokenizer = activityIDStrTokenizer.countTokens();
             String[] activityIDInfoList = new String[numTokenizer];
             i = 0;
@@ -176,17 +181,19 @@ public class ActivityManager {
      * @return true/false
      */
     public static boolean addInput(DataInput dataInput) {
-        DataActivity dataActivity = getActivityByID(dataInput.getParentActivityID());
+        DataActivity dataActivity = getActivityByID(dataInput.getActivityID());
         if (dataActivity == null) {
             //TODO 增加用户交互信息
             return false;
         }
 
         //将输入关联至项目活动中
-        dataActivity.addInput(dataInput);
+        log.info("add input "+dataInput.getID()+" to activity "+dataActivity.getID());
+        dataActivity.getInputList().add(dataInput);
 
         //将项目活动反向关联至活动输入中
-        dataInput.addActivity(dataActivity);
+        log.info("add activity "+dataActivity.getID()+" to input "+dataInput.getID());
+        dataInput.getActivityArrayList().add(dataActivity);
 
         return true;
     }
@@ -198,17 +205,19 @@ public class ActivityManager {
      * @return true/false
      */
     public static boolean addOutput(DataOutput dataOutput) {
-        DataActivity dataActivity = getActivityByID(dataOutput.getParentActivityID());
+        DataActivity dataActivity = getActivityByID(dataOutput.getActivityID());
         if (dataActivity == null) {
             //TODO 增加用户交互信息
             return false;
         }
 
         //将活动输出关联至项目活动中
-        dataActivity.addOutput(dataOutput);
+        log.info("add output "+dataOutput.getID()+" to activity "+dataActivity.getID());
+        dataActivity.getOutputList().add(dataOutput);
 
         //将项目活动反向关联到活动输出中
-        dataOutput.addActivity(dataActivity);
+        log.info("add activity "+dataActivity.getID()+" to output "+dataOutput.getID());
+        dataOutput.getActivityArrayList().add(dataActivity);
 
         return true;
     }
@@ -220,18 +229,30 @@ public class ActivityManager {
      * @return true/false
      */
     public static boolean addTools(DataTools dataTools) {
-        DataActivity dataActivity = getActivityByID(dataTools.getParentActivityID());
+        DataActivity dataActivity = getActivityByID(dataTools.getActivityID());
         if (dataActivity == null) {
             //TODO 增加用户交互信息
             return false;
         }
 
         //将项目工具关联到项目活动中
-        dataActivity.addTools(dataTools);
+        log.info("add tool "+dataTools.getID()+" to activity "+dataActivity.getID());
+        dataActivity.getToolsList().add(dataTools);
 
         //将项目活动反向关联到项目工具中
-        dataTools.addActivity(dataActivity);
+        log.info("add activity "+dataActivity.getID()+" to tools "+dataTools.getID());
+        dataTools.getActivityArrayList().add(dataActivity);
 
         return true;
     }
+
+    public static void displayActivities() {
+        int processCount = activityLinkedList.size();
+
+        for (int i = 0; i < processCount; i++) {
+            DataActivity dataActivity = activityLinkedList.get(i);
+            log.info(dataActivity.getID() + ":" + dataActivity.getDescription());
+        }
+    }
+
 }

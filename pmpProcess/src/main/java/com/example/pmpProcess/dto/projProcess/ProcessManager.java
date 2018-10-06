@@ -56,6 +56,8 @@ public class ProcessManager {
         }
         dataProcess = new DataProcess();
 
+        //初始化过程组对象
+        dataProcess.setActivityArrayList(new ArrayList<>());
         dataProcess.setDescription(processDesc);
         dataProcess.setID(processID);
         dataProcess.setTextDesc(textDesc);
@@ -138,7 +140,10 @@ public class ProcessManager {
             return;
         }
 
-        dataProcess.addActivity(activity);
+        log.info("add activity "+activity.getID()+" to process "+dataProcess.getID());
+
+        //dataProcess.addActivity(activity);
+        dataProcess.getActivityArrayList().add(activity);
 
         return;
     }
@@ -150,10 +155,11 @@ public class ProcessManager {
         int activityCount = activityList.size();
         for (int i = 0; i < activityCount; i++) {
             DataActivity dataActivity = (DataActivity) activityList.get(i);
-            log.info("xxxxxxxxxxxxxx");
-            log.info(dataActivity.getDescription());
-            log.info(dataActivity.getID());
+            log.info(process.getID()+" ："+dataActivity.getID()+" : "+dataActivity.getDescription());
         }
+        log.info("一共"+activityCount+" 个活动");
+
+        return;
     }
 
     public static void displayProcess() {

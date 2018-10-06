@@ -34,34 +34,24 @@ public class DataActivity {
     /**
      * 活动的输入列表
      */
-    static ArrayList<DataInput> inputList = new ArrayList<>();
+    ArrayList<DataInput> inputList;
     /**
      * 活动的输出列表
      */
-    static ArrayList<DataOutput> outputList = new ArrayList<>();
+    ArrayList<DataOutput> outputList;
     /**
      * 活动的工具列表
      */
-    static ArrayList<DataTools> toolsList = new ArrayList<>();
+    ArrayList<DataTools> toolsList;
     /**
      * 活动说明
      */
     String textDesc;
 
-    /**
-     * 向项目活动中添加输入对象
-     *
-     * @param dataInput 输入对象
-     */
-    public static void addInput(DataInput dataInput) {
-        inputList.add(dataInput);
-
-        return;
-    }
-    public static DataInput getInputByID(String inputID){
+    public static DataInput getInputByID(String inputID, ArrayList inputList){
         int LinkedListSize = inputList.size();
         for (int i = 0; i < LinkedListSize; i++) {
-            DataInput element = inputList.get(i);
+            DataInput element = (DataInput) inputList.get(i);
             if (element.getID().equalsIgnoreCase(inputID)) {
                 //TODO 增加日志信息
                 return element;
@@ -71,20 +61,10 @@ public class DataActivity {
         return null;
     }
 
-    /**
-     * 向项目活动中添加输出对象
-     *
-     * @param dataOutput 输出对象
-     */
-    public static void addOutput(DataOutput dataOutput) {
-        outputList.add(dataOutput);
-
-        return;
-    }
-    public static DataOutput getOutputByID(String outputID){
+    public static DataOutput getOutputByID(String outputID, ArrayList outputList){
         int LinkedListSize = outputList.size();
         for (int i = 0; i < LinkedListSize; i++) {
-            DataOutput element = outputList.get(i);
+            DataOutput element = (DataOutput) outputList.get(i);
             if (element.getID().equalsIgnoreCase(outputID)) {
                 //TODO 增加日志信息
                 return element;
@@ -94,22 +74,10 @@ public class DataActivity {
         return null;
     }
 
-
-    /**
-     * 向项目活动中添加项目工具
-     *
-     * @param dataTools 工具对象
-     */
-    public static void addTools(DataTools dataTools) {
-        toolsList.add(dataTools);
-
-        return;
-    }
-
-    public static DataTools getToolByID(String toolID){
+    public static DataTools getToolByID(String toolID, ArrayList toolsList){
         int LinkedListSize = toolsList.size();
         for (int i = 0; i < LinkedListSize; i++) {
-            DataTools element = toolsList.get(i);
+            DataTools element = (DataTools) toolsList.get(i);
             if (element.getID().equalsIgnoreCase(toolID)) {
                 //TODO 增加日志信息
                 return element;
@@ -118,17 +86,4 @@ public class DataActivity {
 
         return null;
     }
-
-    public static ArrayList getInputArrayList(){
-        return inputList;
-    }
-
-    public static ArrayList getOutputArrayList(){
-        return outputList;
-    }
-
-    public static ArrayList getToolsArrayList(){
-        return toolsList;
-    }
-
 }

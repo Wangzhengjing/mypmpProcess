@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -46,7 +47,9 @@ public class FieldManager {
     public DataProjectField loadProjectFieldToList(String fieldDesc, String fieldID) {
         DataProjectField dataProjectField = new DataProjectField();
 
-        dataProjectField.setProjectField(fieldDesc);
+        //初始化知识域对象
+        dataProjectField.setActivityArrayList(new ArrayList<>());
+        dataProjectField.setDescription(fieldDesc);
         dataProjectField.setID(fieldID);
 
         DataProjectField projectField = getProjFieldByID(dataProjectField.getID());
@@ -73,7 +76,7 @@ public class FieldManager {
             DataProjectField dataProjectField = projectFieldLinkedList.get(i);
 
             //x="描述"；知识域ID=活动描述
-            String destString = dataProjectField.getID().toString() + "=" + dataProjectField.getProjectField();
+            String destString = dataProjectField.getID().toString() + "=" + dataProjectField.getDescription();
             fileWriter.append(destString, 0, destString.length());
         }
 
@@ -130,8 +133,40 @@ public class FieldManager {
             return;
         }
 
-        projectField.addActivity(activity);
+        log.info("add activity "+activity.getID()+" to ProjField "+projectField.getID());
+
+        projectField.getActivityArrayList().add(activity);
 
         return;
     }
+
+    public static void displayActivities(String projFieldID) {
+        DataProjectField projField = getProjFieldByID(projFieldID);
+        if (projField == null) {
+            //TODO 增加用户交互信息
+            log.info("No projectFieldID "+projFieldID+" is found.");
+            return;
+        }
+        ArrayList activityList = projField.getActivityArrayList();
+
+        int activityCount = activityList.size();
+        for (int i = 0; i < activityCount; i++) {
+            DataActivity dataActivity = (DataActivity) activityList.get(i);
+            log.info(projField.getID()+" ："+dataActivity.getID()+" : "+dataActivity.getDescription());
+        }
+        log.info("一共"+activityCount+" 个活动");
+
+        return;
+    }
+
+
+    public static void displayProjField() {
+        int processCount = projectFieldLinkedList.size();
+
+        for (int i = 0; i < processCount; i++) {
+            DataProjectField dataProjectField = projectFieldLinkedList.get(i);
+            log.info(dataProjectField.getID() + ":" + dataProjectField.getDescription());
+        }
+    }
+
 }

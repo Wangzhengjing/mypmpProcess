@@ -15,9 +15,13 @@ public class DataTools {
      */
     String ID;
     /**
+     * 所属活动描述
+     */
+    String activityDescription;
+    /**
      * 所属活动ID
      */
-    String parentActivityID;
+    String activityID;
     /**
      * 工具说明
      */
@@ -25,20 +29,5 @@ public class DataTools {
     /**
      * 项目工具对应的项目活动
      */
-    static ArrayList<DataActivity> activityArrayList = new ArrayList<>();
-
-    /**
-     * 向工具中添加项目活动
-     *
-     * @param dataActivity 活动对象
-     */
-    public static void addActivity(DataActivity dataActivity) {
-        activityArrayList.add(dataActivity);
-
-        return;
-    }
-
-    public static ArrayList getActivityArrayList(){
-        return activityArrayList;
-    }
+    ArrayList<DataActivity> activityArrayList;
 }

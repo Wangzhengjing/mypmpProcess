@@ -5,6 +5,7 @@ import com.example.pmpProcess.data.projectActivity.DataInput;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -38,23 +39,27 @@ public class InputManager {
      * 加载输入信息到内存中
      *
      * @param description 输入说明
-     * @param id          输入ID
+     * @param inputID     输入ID
      * @return 返回输入对象
      */
-    private DataInput loadInputToList(String description, String id) {
+    private DataInput loadInputToList(String description, String inputID, String activityID) {
         DataInput dataInput = new DataInput();
 
+        dataInput.setActivityArrayList(new ArrayList<>());
         dataInput.setDescription(description);
-        dataInput.setID(id);
+        dataInput.setID(inputID);
+        dataInput.setActivityID(activityID);
 
         //向输入链表中添加输入对象
-        DataInput inputEle = getInputByID(id);
+        DataInput inputEle = getInputByID(inputID);
         if (inputEle == null) {
             inputLinkedList.add(dataInput);
         } else {
             //TODO 增加交互性信息
         }
 
+        //将输入关联到项目活动中
+        ActivityManager.addInput(dataInput);
 
         return dataInput;
     }
@@ -65,17 +70,15 @@ public class InputManager {
      * @return ture/false
      * @throws IOException
      */
-    public boolean appendInputConfig() throws IOException {
+    public boolean insertInputConfig(DataInput dataInput) throws IOException {
         String fileName = ".\\config\\Input.txt";
         FileWriter fileWriter = new FileWriter(fileName, true);
-        int activityCount = inputLinkedList.size();
-        for (int i = 0; i < activityCount; i++) {
-            DataInput dataInput = inputLinkedList.get(i);
 
-            //x="描述"；ID=输入描述
-            String destString = dataInput.getParentActivityID().toString() + dataInput.getDescription();
-            fileWriter.append(destString, 0, destString.length());
-        }
+        //x.x.x.x=活动ID.输入ID "描述"
+        String destString = dataInput.getActivityID().toString() + "."
+                + dataInput.getID() + "\t"
+                + dataInput.getDescription();
+        fileWriter.append(destString, 0, destString.length());
 
         fileWriter.flush();
         fileWriter.close();
@@ -96,6 +99,8 @@ public class InputManager {
 
         String description = "";
         String id = "";
+        String activityID = "";
+        String inputID = "";
 
         while ((bufferData = bufferedReader.readLine()) != null) {
             StringTokenizer stringTokenizer = new StringTokenizer(bufferData);
@@ -112,7 +117,23 @@ public class InputManager {
             description = inputDefsList[1];
             id = inputDefsList[0];
 
-            loadInputToList(description, id);
+            //解析项目活动的ID信息
+            StringTokenizer activityIDStrTokenizer = new StringTokenizer(id, ".");
+            numTokenizer = activityIDStrTokenizer.countTokens();
+            String[] activityIDInfoList = new String[numTokenizer];
+            i = 0;
+
+            while (activityIDStrTokenizer.hasMoreElements()) {
+                activityIDInfoList[i] = activityIDStrTokenizer.nextToken();
+                i++;
+            }
+            //处理活动ID的信息
+            activityID = activityIDInfoList[0].toString() + "."
+                    + activityIDInfoList[1].toString() + "."
+                    + activityIDInfoList[2];
+            inputID = activityIDInfoList[3];
+
+            loadInputToList(description, inputID, activityID);
         }
 
         bufferedReader.close();
@@ -133,6 +154,7 @@ public class InputManager {
 
         String description = "";
         String id = "";
+        String activityID = "";
 
         while ((bufferData = bufferedReader.readLine()) != null) {
             StringTokenizer stringTokenizer = new StringTokenizer(bufferData);
@@ -149,7 +171,7 @@ public class InputManager {
             description = inputDefsList[1];
             id = inputDefsList[0];
 
-            loadInputToList(description, id);
+            loadInputToList(description, id, activityID);
         }
 
         bufferedReader.close();
