@@ -40,14 +40,16 @@ public class PmpProcessApplicationTests {
 		//获取项目活动配置信息
 		activityManager.parseActivityConfig();
 
+		processManager.displayActivities("4");
+
 		//配置输入信息
 
 		//配置输出信息
 		//配置工具信息
 
-		inputManager.parseInputDefsConfig();
-		outputManager.parseOutputDefsConfig();
-		toolsManager.parseToolsDefsConfig();
+		//inputManager.parseInputDefsConfig();
+		//outputManager.parseOutputDefsConfig();
+		//toolsManager.parseToolsDefsConfig();
 
 		return;
 	}

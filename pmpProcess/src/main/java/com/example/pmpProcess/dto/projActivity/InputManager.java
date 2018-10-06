@@ -25,7 +25,7 @@ public class InputManager {
         int LinkedListSize = inputLinkedList.size();
         for (int i = 0; i < LinkedListSize; i++) {
             DataInput element = inputLinkedList.get(i);
-            if (element.getID() == inputID) {
+            if (element.getID().equalsIgnoreCase(inputID)) {
                 //TODO 增加日志信息
                 return element;
             }
@@ -66,7 +66,7 @@ public class InputManager {
      * @throws IOException
      */
     public boolean appendInputConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Input.txt";
+        String fileName = ".\\config\\Input.txt";
         FileWriter fileWriter = new FileWriter(fileName, true);
         int activityCount = inputLinkedList.size();
         for (int i = 0; i < activityCount; i++) {
@@ -90,7 +90,7 @@ public class InputManager {
      * @throws IOException
      */
     public boolean parseInputConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Input.txt";
+        String fileName = ".\\config\\Input.txt";
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
         String bufferData = null;
 
@@ -127,7 +127,7 @@ public class InputManager {
      * @throws IOException
      */
     public boolean parseInputDefsConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\InputDefs.txt";
+        String fileName = ".\\config\\InputDefs.txt";
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "gbk"));
         String bufferData = null;
 

@@ -4,6 +4,7 @@ import com.example.pmpProcess.data.projectActivity.DataActivity;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 @Data
@@ -29,5 +30,13 @@ public class DataProjectField {
         activityArrayList.add(activity);
 
         return;
+    }
+
+    public static DataActivity getActivity(int activityID){
+        return activityArrayList.get(activityID);
+    }
+
+    public static ArrayList getActivityArrayList(){
+        return activityArrayList;
     }
 }

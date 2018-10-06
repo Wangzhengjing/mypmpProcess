@@ -2,6 +2,7 @@ package com.example.pmpProcess.data.projectActivity;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 @Data
@@ -33,15 +34,15 @@ public class DataActivity {
     /**
      * 活动的输入列表
      */
-    static LinkedList<DataInput> inputList;
+    static ArrayList<DataInput> inputList = new ArrayList<>();
     /**
      * 活动的输出列表
      */
-    static LinkedList<DataOutput> outputList;
+    static ArrayList<DataOutput> outputList = new ArrayList<>();
     /**
      * 活动的工具列表
      */
-    static LinkedList<DataTools> toolsList;
+    static ArrayList<DataTools> toolsList = new ArrayList<>();
     /**
      * 活动说明
      */
@@ -61,7 +62,7 @@ public class DataActivity {
         int LinkedListSize = inputList.size();
         for (int i = 0; i < LinkedListSize; i++) {
             DataInput element = inputList.get(i);
-            if (element.getID() == inputID) {
+            if (element.getID().equalsIgnoreCase(inputID)) {
                 //TODO 增加日志信息
                 return element;
             }
@@ -84,7 +85,7 @@ public class DataActivity {
         int LinkedListSize = outputList.size();
         for (int i = 0; i < LinkedListSize; i++) {
             DataOutput element = outputList.get(i);
-            if (element.getID() == outputID) {
+            if (element.getID().equalsIgnoreCase(outputID)) {
                 //TODO 增加日志信息
                 return element;
             }
@@ -109,13 +110,25 @@ public class DataActivity {
         int LinkedListSize = toolsList.size();
         for (int i = 0; i < LinkedListSize; i++) {
             DataTools element = toolsList.get(i);
-            if (element.getID() == toolID) {
+            if (element.getID().equalsIgnoreCase(toolID)) {
                 //TODO 增加日志信息
                 return element;
             }
         }
 
         return null;
+    }
+
+    public static ArrayList getInputArrayList(){
+        return inputList;
+    }
+
+    public static ArrayList getOutputArrayList(){
+        return outputList;
+    }
+
+    public static ArrayList getToolsArrayList(){
+        return toolsList;
     }
 
 }

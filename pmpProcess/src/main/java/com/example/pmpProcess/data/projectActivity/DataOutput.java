@@ -46,4 +46,7 @@ public class DataOutput {
         return;
     }
 
+    public static ArrayList getActivityArrayList(){
+        return activityArrayList;
+    }
 }

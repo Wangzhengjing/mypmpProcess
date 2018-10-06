@@ -31,7 +31,7 @@ public class ActivityManager {
         int LinkedListSize = activityLinkedList.size();
         for (int i = 0; i < LinkedListSize; i++) {
             DataActivity element = activityLinkedList.get(i);
-            if (element.getID() == activityID) {
+            if (element.getID().equalsIgnoreCase(activityID)) {
                 //TODO 增加日志信息
                 return element;
             }
@@ -41,7 +41,7 @@ public class ActivityManager {
     }
 
     /**
-     * 设置活动名称等信息
+     * 设置活动名称等信息，并将活动关联至过程组，知识域中
      *
      * @param actDesc     活动描述
      * @param fieldDesc   知识域描述
@@ -94,7 +94,7 @@ public class ActivityManager {
      * @throws IOException
      */
     public boolean appendActivityConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Activity.txt";
+        String fileName = ".\\config\\Activity.txt";
         FileWriter fileWriter = new FileWriter(fileName, true);
         int activityCount = activityLinkedList.size();
         for (int i = 0; i < activityCount; i++) {
@@ -119,7 +119,7 @@ public class ActivityManager {
      * @throws IOException
      */
     public boolean parseActivityConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Activity.txt";
+        String fileName = ".\\config\\Activity.txt";
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "gbk"));
         String bufferData = null;
 

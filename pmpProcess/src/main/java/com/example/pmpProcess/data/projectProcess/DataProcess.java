@@ -30,4 +30,8 @@ public class DataProcess {
 
         return;
     }
+
+    public static ArrayList getActivityArrayList(){
+        return activityArrayList;
+    }
 }
