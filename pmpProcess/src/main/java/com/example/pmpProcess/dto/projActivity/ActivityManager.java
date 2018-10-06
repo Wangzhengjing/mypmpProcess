@@ -130,6 +130,7 @@ public class ActivityManager {
         String processDesc = "";
         String processID = "";
 
+
         while ((bufferData = bufferedReader.readLine()) != null) {
             StringTokenizer stringTokenizer = new StringTokenizer(bufferData);
             int numTokenizer = stringTokenizer.countTokens();
@@ -144,6 +145,20 @@ public class ActivityManager {
             //将解析结果进行处理
             actDesc = activityInfoList[1];
             actID = activityInfoList[0];
+
+            //解析项目活动的ID信息
+            StringTokenizer activityIDStrTokenizer = new StringTokenizer(actID);
+            numTokenizer = activityIDStrTokenizer.countTokens();
+            String[] activityIDInfoList = new String[numTokenizer];
+            i = 0;
+
+            while (activityIDStrTokenizer.hasMoreElements()){
+                activityIDInfoList[i] = activityIDStrTokenizer.nextToken();
+                i++;
+            }
+            //处理活动ID的信息
+            processID = activityIDInfoList[0];
+            fieldID = activityIDInfoList[1];
 
             loadActivityToList(actDesc, actID, fieldDesc,
                     fieldID, processDesc, processID);

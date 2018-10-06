@@ -150,12 +150,11 @@ public class InputManager {
             id = inputDefsList[0];
 
             loadInputToList(description, id);
-
         }
 
-            bufferedReader.close();
+        bufferedReader.close();
 
-            return true;
+        return true;
     }
 
     public static boolean addActivity(DataActivity dataActivity) {
