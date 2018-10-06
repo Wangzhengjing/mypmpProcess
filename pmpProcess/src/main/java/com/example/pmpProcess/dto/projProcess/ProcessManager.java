@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -27,7 +28,7 @@ public class ProcessManager {
         int LinkedListSize = processLinkedList.size();
         for (int i = 0; i < LinkedListSize; i++) {
             DataProcess element = processLinkedList.get(i);
-            if (element.getID() == processID) {
+            if (element.getID().equalsIgnoreCase(processID)) {
                 //TODO 增加日志信息
                 return element;
             }
@@ -48,6 +49,9 @@ public class ProcessManager {
 
         DataProcess dataProcess = getProcessByID(processID);
         if (dataProcess != null) {
+            //TODO 增加交互性信息
+            log.info("Process is already in list.");
+
             return;
         }
         dataProcess = new DataProcess();
@@ -57,12 +61,7 @@ public class ProcessManager {
         dataProcess.setTextDesc(textDesc);
 
         //将过程组元素添加到过程组链表中
-        DataProcess dataProcessEle = getProcessByID(dataProcess.getID());
-        if (dataProcessEle == null) {
-            processLinkedList.add(dataProcess);
-        } else {
-            //TODO 增加交互性信息
-        }
+        processLinkedList.add(dataProcess);
 
         return;
     }
@@ -74,7 +73,7 @@ public class ProcessManager {
      * @throws IOException
      */
     public boolean appendProcessConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Process.txt";
+        String fileName = ".\\config\\Process.txt";
         FileWriter fileWriter = new FileWriter(fileName, true);
         int activityCount = processLinkedList.size();
         for (int i = 0; i < activityCount; i++) {
@@ -98,7 +97,7 @@ public class ProcessManager {
      * @throws IOException
      */
     public boolean parseProcessConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Process.txt";
+        String fileName = ".\\config\\Process.txt";
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "gbk"));
         String bufferData = null;
 
@@ -142,5 +141,27 @@ public class ProcessManager {
         dataProcess.addActivity(activity);
 
         return;
+    }
+
+    public static void displayActivities(String processID) {
+        DataProcess process = getProcessByID(processID);
+        ArrayList activityList = process.getActivityArrayList();
+
+        int activityCount = activityList.size();
+        for (int i = 0; i < activityCount; i++) {
+            DataActivity dataActivity = (DataActivity) activityList.get(i);
+            log.info("xxxxxxxxxxxxxx");
+            log.info(dataActivity.getDescription());
+            log.info(dataActivity.getID());
+        }
+    }
+
+    public static void displayProcess() {
+        int processCount = processLinkedList.size();
+
+        for (int i = 0; i < processCount; i++) {
+            DataProcess dataProcess = processLinkedList.get(i);
+            log.info(dataProcess.getID() + ":" + dataProcess.getDescription());
+        }
     }
 }

@@ -24,7 +24,7 @@ public class OutputManager {
         int LinkedListSize = OutputLinkedList.size();
         for (int i = 0; i < LinkedListSize; i++) {
             DataOutput element = OutputLinkedList.get(i);
-            if (element.getID() == outputID) {
+            if (element.getID().equalsIgnoreCase(outputID)) {
                 //TODO 增加日志信息
                 return element;
             }
@@ -65,7 +65,7 @@ public class OutputManager {
      * @throws IOException
      */
     public boolean appendOutputConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Output.txt";
+        String fileName = ".\\config\\Output.txt";
         FileWriter fileWriter = new FileWriter(fileName, true);
         int activityCount = OutputLinkedList.size();
         for (int i = 0; i < activityCount; i++) {
@@ -90,7 +90,7 @@ public class OutputManager {
      * @throws IOException
      */
     public boolean parseOutputConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Output.txt";
+        String fileName = ".\\config\\Output.txt";
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
         String bufferData = null;
 
@@ -127,7 +127,7 @@ public class OutputManager {
      * @throws IOException
      */
     public boolean parseOutputDefsConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\OutputDefs.txt";
+        String fileName = ".\\config\\OutputDefs.txt";
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "gbk"));
         String bufferData = null;
 

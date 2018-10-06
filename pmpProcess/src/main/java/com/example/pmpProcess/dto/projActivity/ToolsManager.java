@@ -24,7 +24,7 @@ public class ToolsManager {
         int LinkedListSize = ToolsLinkedList.size();
         for (int i = 0; i < LinkedListSize; i++) {
             DataTools element = ToolsLinkedList.get(i);
-            if (element.getID() == toolsID) {
+            if (element.getID().equalsIgnoreCase(toolsID)) {
                 //TODO 增加日志信息
                 return element;
             }
@@ -79,7 +79,7 @@ public class ToolsManager {
      * @throws IOException
      */
     public boolean appendToolsConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Input.txt";
+        String fileName = ".\\config\\Input.txt";
         FileWriter fileWriter = new FileWriter(fileName, true);
         int activityCount = ToolsLinkedList.size();
         for (int i = 0; i < activityCount; i++) {
@@ -103,7 +103,7 @@ public class ToolsManager {
      * @throws IOException
      */
     public boolean parseToolsConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\Tools.txt";
+        String fileName = ".\\config\\Tools.txt";
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "gbk"));
         String bufferData = null;
 
@@ -141,7 +141,7 @@ public class ToolsManager {
      * @throws IOException
      */
     public boolean parseToolsDefsConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\ToolsDefs.txt";
+        String fileName = ".\\config\\ToolsDefs.txt";
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "gbk"));
         String bufferData = null;
 

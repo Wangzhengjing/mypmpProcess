@@ -55,4 +55,7 @@ public class DataInput {
         return;
     }
 
+    public static ArrayList getActivityArrayList(){
+        return activityArrayList;
+    }
 }

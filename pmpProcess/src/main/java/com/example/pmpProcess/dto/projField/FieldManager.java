@@ -28,7 +28,7 @@ public class FieldManager {
         int LinkedListSize = projectFieldLinkedList.size();
         for (int i = 0; i < LinkedListSize; i++) {
             DataProjectField element = projectFieldLinkedList.get(i);
-            if (element.getID() == projectFieldID) {
+            if (element.getID().equalsIgnoreCase(projectFieldID)) {
                 //TODO 增加日志信息
                 return element;
             }
@@ -66,7 +66,7 @@ public class FieldManager {
      * @throws IOException
      */
     public boolean appendProjectFieldConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\ProjField.txt";
+        String fileName = ".\\config\\ProjField.txt";
         FileWriter fileWriter = new FileWriter(fileName, true);
         int activityCount = projectFieldLinkedList.size();
         for (int i = 0; i < activityCount; i++) {
@@ -90,7 +90,7 @@ public class FieldManager {
      * @throws IOException
      */
     public boolean parseProjFieldConfig() throws IOException {
-        String fileName = "D:\\rmt_code_server\\pmpProcessor\\pmpProcess\\config\\ProjField.txt";
+        String fileName = ".\\config\\ProjField.txt";
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName),"gbk"));
         String bufferData = null;
 

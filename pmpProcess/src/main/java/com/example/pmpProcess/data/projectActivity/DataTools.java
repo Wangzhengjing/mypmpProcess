@@ -38,4 +38,7 @@ public class DataTools {
         return;
     }
 
+    public static ArrayList getActivityArrayList(){
+        return activityArrayList;
+    }
 }
