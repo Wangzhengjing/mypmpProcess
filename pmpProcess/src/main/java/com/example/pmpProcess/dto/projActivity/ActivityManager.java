@@ -98,18 +98,16 @@ public class ActivityManager {
      * @return
      * @throws IOException
      */
-    public boolean appendActivityConfig() throws IOException {
+    public boolean insertActivityConfig(DataActivity dataActivity) throws IOException {
         String fileName = ".\\config\\Activity.txt";
         FileWriter fileWriter = new FileWriter(fileName, true);
-        int activityCount = activityLinkedList.size();
-        for (int i = 0; i < activityCount; i++) {
-            DataActivity dataActivity = activityLinkedList.get(i);
 
-            //x.x.x="描述"；过程组ID.知识域ID.活动ID=活动描述
-            String destString = dataActivity.getProcessID().toString() + "." + dataActivity.getParentFieldID().toString() +
-                    "." + dataActivity.getID() + "=" + dataActivity.getDescription();
-            fileWriter.append(destString, 0, destString.length());
-        }
+        //x.x.x="描述"；过程组ID.知识域ID.活动ID=活动描述
+        String destString = dataActivity.getProcessID().toString() + "."
+                + dataActivity.getParentFieldID().toString() + "."
+                + dataActivity.getID() + "="
+                + dataActivity.getDescription() + "\r\n";
+        fileWriter.append(destString, 0, destString.length());
 
         fileWriter.flush();
         fileWriter.close();
@@ -157,7 +155,7 @@ public class ActivityManager {
             String[] activityIDInfoList = new String[numTokenizer];
             i = 0;
 
-            while (activityIDStrTokenizer.hasMoreElements()){
+            while (activityIDStrTokenizer.hasMoreElements()) {
                 activityIDInfoList[i] = activityIDStrTokenizer.nextToken();
                 i++;
             }
@@ -188,11 +186,11 @@ public class ActivityManager {
         }
 
         //将输入关联至项目活动中
-        log.info("add input "+dataInput.getID()+" to activity "+dataActivity.getID());
+        log.info("add input " + dataInput.getID() + " to activity " + dataActivity.getID());
         dataActivity.getInputList().add(dataInput);
 
         //将项目活动反向关联至活动输入中
-        log.info("add activity "+dataActivity.getID()+" to input "+dataInput.getID());
+        log.info("add activity " + dataActivity.getID() + " to input " + dataInput.getID());
         dataInput.getActivityArrayList().add(dataActivity);
 
         return true;
@@ -212,11 +210,11 @@ public class ActivityManager {
         }
 
         //将活动输出关联至项目活动中
-        log.info("add output "+dataOutput.getID()+" to activity "+dataActivity.getID());
+        log.info("add output " + dataOutput.getID() + " to activity " + dataActivity.getID());
         dataActivity.getOutputList().add(dataOutput);
 
         //将项目活动反向关联到活动输出中
-        log.info("add activity "+dataActivity.getID()+" to output "+dataOutput.getID());
+        log.info("add activity " + dataActivity.getID() + " to output " + dataOutput.getID());
         dataOutput.getActivityArrayList().add(dataActivity);
 
         return true;
@@ -236,16 +234,19 @@ public class ActivityManager {
         }
 
         //将项目工具关联到项目活动中
-        log.info("add tool "+dataTools.getID()+" to activity "+dataActivity.getID());
+        log.info("add tool " + dataTools.getID() + " to activity " + dataActivity.getID());
         dataActivity.getToolsList().add(dataTools);
 
         //将项目活动反向关联到项目工具中
-        log.info("add activity "+dataActivity.getID()+" to tools "+dataTools.getID());
+        log.info("add activity " + dataActivity.getID() + " to tools " + dataTools.getID());
         dataTools.getActivityArrayList().add(dataActivity);
 
         return true;
     }
 
+    /**
+     * 展示所有活动
+     */
     public static void displayActivities() {
         int processCount = activityLinkedList.size();
 
@@ -253,6 +254,78 @@ public class ActivityManager {
             DataActivity dataActivity = activityLinkedList.get(i);
             log.info(dataActivity.getID() + ":" + dataActivity.getDescription());
         }
+    }
+
+    /**
+     * 根据指定项目活动ID，展示活动下所有输入
+     *
+     * @param activityID 指定项目活动ID
+     */
+    public static void displayInput(String activityID) {
+        DataActivity dataActivity = getActivityByID(activityID);
+        if (dataActivity == null) {
+            //TODO 增加交互信息
+            log.info("No activity with ID " + activityID + " is found.");
+            return;
+        }
+
+        ArrayList inputArrayList = dataActivity.getInputList();
+        int inputCount = inputArrayList.size();
+        for (int i = 0; i < inputCount; i++) {
+            DataInput dataInput = (DataInput) inputArrayList.get(i);
+            log.info(dataInput.getActivityID() + ":" + dataInput.getID() + ":" + dataInput.getDescription());
+        }
+        log.info("一共" + inputCount + " 个输入");
+
+        return;
+    }
+
+    /**
+     * 根据指定项目活动ID，展示活动下所有输出
+     *
+     * @param activityID 指定项目活动ID
+     */
+    public static void displayOutput(String activityID) {
+        DataActivity dataActivity = getActivityByID(activityID);
+        if (dataActivity == null) {
+            //TODO 增加交互信息
+            log.info("No activity with ID " + activityID + " is found.");
+            return;
+        }
+
+        ArrayList outputArrayList = dataActivity.getOutputList();
+        int outputCount = outputArrayList.size();
+        for (int i = 0; i < outputCount; i++) {
+            DataOutput dataOutput = (DataOutput) outputArrayList.get(i);
+            log.info(dataOutput.getActivityID() + ":" + dataOutput.getID() + ":" + dataOutput.getDescription());
+        }
+        log.info("一共" + outputCount + " 个输出");
+
+        return;
+    }
+
+    /**
+     * 根据指定项目活动ID，展示活动下所有工具
+     *
+     * @param activityID 指定项目活动
+     */
+    public static void displayTools(String activityID) {
+        DataActivity dataActivity = getActivityByID(activityID);
+        if (dataActivity == null) {
+            //TODO 增加交互信息
+            log.info("No activity with ID " + activityID + " is found.");
+            return;
+        }
+
+        ArrayList toolsArrayList = dataActivity.getToolsList();
+        int toolsCount = toolsArrayList.size();
+        for (int i = 0; i < toolsCount; i++) {
+            DataTools dataTools = (DataTools) toolsArrayList.get(i);
+            log.info(dataTools.getActivityID() + ":" + dataTools.getID() + ":" + dataTools.getDescription());
+        }
+        log.info("一共" + toolsCount + " 个工具");
+
+        return;
     }
 
 }

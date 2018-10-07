@@ -77,7 +77,7 @@ public class InputManager {
         //x.x.x.x=活动ID.输入ID "描述"
         String destString = dataInput.getActivityID().toString() + "."
                 + dataInput.getID() + "\t"
-                + dataInput.getDescription();
+                + dataInput.getDescription() + "\r\n";
         fileWriter.append(destString, 0, destString.length());
 
         fileWriter.flush();
@@ -179,7 +179,40 @@ public class InputManager {
         return true;
     }
 
-    public static boolean addActivity(DataActivity dataActivity) {
-        return true;
+    /**
+     * 展示所有输入
+     */
+    public static void displayInputs() {
+        int inputCount = inputLinkedList.size();
+
+        for (int i = 0; i < inputCount; i++) {
+            DataInput dataInput = inputLinkedList.get(i);
+            log.info(dataInput.getID() + ":" + dataInput.getDescription());
+        }
     }
+
+    /**
+     * 根据指定输入ID，展示含有该输入的所有项目活动
+     *
+     * @param inputID 指定输入ID
+     */
+    public static void displayActivities(String inputID) {
+        DataInput dataInput = getInputByID(inputID);
+        if (dataInput == null) {
+            //TODO 增加交互信息
+            log.info("No input with ID " + inputID + " is found.");
+            return;
+        }
+
+        ArrayList activityArrayList = dataInput.getActivityArrayList();
+        int activityCount = activityArrayList.size();
+        for (int i = 0; i < activityCount; i++) {
+            DataActivity dataActivity = (DataActivity) activityArrayList.get(i);
+            log.info(dataActivity.getID() + ":" + dataActivity.getDescription());
+        }
+        log.info("一共" + activityCount + " 个活动");
+
+        return;
+    }
+
 }

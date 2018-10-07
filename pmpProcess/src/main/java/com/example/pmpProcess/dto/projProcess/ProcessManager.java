@@ -74,17 +74,13 @@ public class ProcessManager {
      * @return
      * @throws IOException
      */
-    public boolean appendProcessConfig() throws IOException {
+    public boolean insertProcessConfig(DataProcess dataProcess) throws IOException {
         String fileName = ".\\config\\Process.txt";
         FileWriter fileWriter = new FileWriter(fileName, true);
-        int activityCount = processLinkedList.size();
-        for (int i = 0; i < activityCount; i++) {
-            DataProcess dataProcess = processLinkedList.get(i);
 
-            //x="描述"；过程组ID=活动描述
-            String destString = dataProcess.getID().toString() + "=" + dataProcess.getDescription();
-            fileWriter.append(destString, 0, destString.length());
-        }
+        //x="描述"；过程组ID=活动描述
+        String destString = dataProcess.getID().toString() + "=" + dataProcess.getDescription() + "\r\n";
+        fileWriter.append(destString, 0, destString.length());
 
         fileWriter.flush();
         fileWriter.close();
@@ -140,7 +136,7 @@ public class ProcessManager {
             return;
         }
 
-        log.info("add activity "+activity.getID()+" to process "+dataProcess.getID());
+        log.info("add activity " + activity.getID() + " to process " + dataProcess.getID());
 
         //dataProcess.addActivity(activity);
         dataProcess.getActivityArrayList().add(activity);
@@ -148,6 +144,11 @@ public class ProcessManager {
         return;
     }
 
+    /**
+     * 根据指定进程组号，展示进程组下的所有项目活动
+     *
+     * @param processID
+     */
     public static void displayActivities(String processID) {
         DataProcess process = getProcessByID(processID);
         ArrayList activityList = process.getActivityArrayList();
@@ -155,13 +156,16 @@ public class ProcessManager {
         int activityCount = activityList.size();
         for (int i = 0; i < activityCount; i++) {
             DataActivity dataActivity = (DataActivity) activityList.get(i);
-            log.info(process.getID()+" ："+dataActivity.getID()+" : "+dataActivity.getDescription());
+            log.info(process.getID() + " ：" + dataActivity.getID() + " : " + dataActivity.getDescription());
         }
-        log.info("一共"+activityCount+" 个活动");
+        log.info("一共" + activityCount + " 个活动");
 
         return;
     }
 
+    /**
+     * 展示所有进程组
+     */
     public static void displayProcess() {
         int processCount = processLinkedList.size();
 

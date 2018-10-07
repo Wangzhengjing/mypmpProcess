@@ -9,7 +9,7 @@ public class DataTools {
     /**
      * 工具名称描述
      */
-    String toolsDescription;
+    String Description;
     /**
      * 工具唯一标识ID信息
      */

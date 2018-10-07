@@ -68,17 +68,14 @@ public class FieldManager {
      * @return
      * @throws IOException
      */
-    public boolean appendProjectFieldConfig() throws IOException {
+    public boolean insertProjectFieldConfig(DataProjectField dataProjectField) throws IOException {
         String fileName = ".\\config\\ProjField.txt";
         FileWriter fileWriter = new FileWriter(fileName, true);
-        int activityCount = projectFieldLinkedList.size();
-        for (int i = 0; i < activityCount; i++) {
-            DataProjectField dataProjectField = projectFieldLinkedList.get(i);
 
-            //x="描述"；知识域ID=活动描述
-            String destString = dataProjectField.getID().toString() + "=" + dataProjectField.getDescription();
-            fileWriter.append(destString, 0, destString.length());
-        }
+        //x="描述"；知识域ID=活动描述
+        String destString = dataProjectField.getID().toString() + "="
+                + dataProjectField.getDescription() + "\r\n";
+        fileWriter.append(destString, 0, destString.length());
 
         fileWriter.flush();
         fileWriter.close();
@@ -94,7 +91,7 @@ public class FieldManager {
      */
     public boolean parseProjFieldConfig() throws IOException {
         String fileName = ".\\config\\ProjField.txt";
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName),"gbk"));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "gbk"));
         String bufferData = null;
 
         String fieldDesc = "";
@@ -133,18 +130,23 @@ public class FieldManager {
             return;
         }
 
-        log.info("add activity "+activity.getID()+" to ProjField "+projectField.getID());
+        log.info("add activity " + activity.getID() + " to ProjField " + projectField.getID());
 
         projectField.getActivityArrayList().add(activity);
 
         return;
     }
 
+    /**
+     * 根据指定知识域ID，展示知识域下所有项目活动
+     *
+     * @param projFieldID
+     */
     public static void displayActivities(String projFieldID) {
         DataProjectField projField = getProjFieldByID(projFieldID);
         if (projField == null) {
             //TODO 增加用户交互信息
-            log.info("No projectFieldID "+projFieldID+" is found.");
+            log.info("No projectFieldID " + projFieldID + " is found.");
             return;
         }
         ArrayList activityList = projField.getActivityArrayList();
@@ -152,14 +154,16 @@ public class FieldManager {
         int activityCount = activityList.size();
         for (int i = 0; i < activityCount; i++) {
             DataActivity dataActivity = (DataActivity) activityList.get(i);
-            log.info(projField.getID()+" ："+dataActivity.getID()+" : "+dataActivity.getDescription());
+            log.info(projField.getID() + " ：" + dataActivity.getID() + " : " + dataActivity.getDescription());
         }
-        log.info("一共"+activityCount+" 个活动");
+        log.info("一共" + activityCount + " 个活动");
 
         return;
     }
 
-
+    /**
+     * 展示所有知识域信息
+     */
     public static void displayProjField() {
         int processCount = projectFieldLinkedList.size();
 

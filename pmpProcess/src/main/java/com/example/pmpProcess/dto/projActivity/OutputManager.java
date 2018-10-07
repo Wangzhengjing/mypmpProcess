@@ -1,5 +1,7 @@
 package com.example.pmpProcess.dto.projActivity;
 
+import com.example.pmpProcess.data.projectActivity.DataActivity;
+import com.example.pmpProcess.data.projectActivity.DataInput;
 import com.example.pmpProcess.data.projectActivity.DataOutput;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,7 +15,7 @@ public class OutputManager {
     /**
      * 活动链表
      */
-    static LinkedList<DataOutput> OutputLinkedList = new LinkedList<>();
+    static LinkedList<DataOutput> outputLinkedList = new LinkedList<>();
 
     /**
      * 根据输出的唯一标识ID，获取输出对象
@@ -22,9 +24,9 @@ public class OutputManager {
      * @return 输出对象
      */
     private static DataOutput getOutputByID(String outputID) {
-        int LinkedListSize = OutputLinkedList.size();
+        int LinkedListSize = outputLinkedList.size();
         for (int i = 0; i < LinkedListSize; i++) {
-            DataOutput element = OutputLinkedList.get(i);
+            DataOutput element = outputLinkedList.get(i);
             if (element.getID().equalsIgnoreCase(outputID)) {
                 //TODO 增加日志信息
                 return element;
@@ -52,7 +54,7 @@ public class OutputManager {
         //向输入链表中添加输入对象
         DataOutput inputEle = getOutputByID(outputID);
         if (inputEle == null) {
-            OutputLinkedList.add(dataOutput);
+            outputLinkedList.add(dataOutput);
         } else {
             //TODO 增加交互性信息
         }
@@ -77,7 +79,7 @@ public class OutputManager {
         //x.x.x.x=活动ID.输出ID "描述"
         String destString = dataOutput.getActivityID().toString() + "."
                 + dataOutput.getID() + "\t"
-                + dataOutput.getDescription();
+                + dataOutput.getDescription() + "\r\n";
         //fileWriter.append(destString, 0, destString.length());
         fileWriter.write(destString);
 
@@ -197,4 +199,39 @@ public class OutputManager {
         return dataOutput;
     }
 
+    /**
+     * 展示所有输出
+     */
+    public static void displayOutputs() {
+        int outputCount = outputLinkedList.size();
+
+        for (int i = 0; i < outputCount; i++) {
+            DataOutput dataOutput = outputLinkedList.get(i);
+            log.info(dataOutput.getID() + ":" + dataOutput.getDescription());
+        }
+    }
+
+    /**
+     * 根据指定输出ID，展示包含此输出的所有项目活动
+     *
+     * @param outputID 指定输出ID
+     */
+    public static void displayActivities(String outputID) {
+        DataOutput dataOutput = getOutputByID(outputID);
+        if (dataOutput == null) {
+            //TODO 增加交互信息
+            log.info("No output with ID " + outputID + " is found.");
+            return;
+        }
+
+        ArrayList activityArrayList = dataOutput.getActivityArrayList();
+        int activityCount = activityArrayList.size();
+        for (int i = 0; i < activityCount; i++) {
+            DataActivity dataActivity = (DataActivity) activityArrayList.get(i);
+            log.info(dataActivity.getID() + ":" + dataActivity.getDescription());
+        }
+        log.info("一共" + activityCount + " 个活动");
+
+        return;
+    }
 }

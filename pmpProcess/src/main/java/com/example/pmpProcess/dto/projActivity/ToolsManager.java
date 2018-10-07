@@ -1,5 +1,6 @@
 package com.example.pmpProcess.dto.projActivity;
 
+import com.example.pmpProcess.data.projectActivity.DataActivity;
 import com.example.pmpProcess.data.projectActivity.DataTools;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,7 +14,7 @@ public class ToolsManager {
     /**
      * 活动链表
      */
-    static LinkedList<DataTools> ToolsLinkedList = new LinkedList<>();
+    static LinkedList<DataTools> toolsLinkedList = new LinkedList<>();
 
     /**
      * 根据工具ID，获取工具的详细信息
@@ -22,9 +23,9 @@ public class ToolsManager {
      * @return 工具对象
      */
     private static DataTools getToolsByID(String toolsID) {
-        int LinkedListSize = ToolsLinkedList.size();
+        int LinkedListSize = toolsLinkedList.size();
         for (int i = 0; i < LinkedListSize; i++) {
-            DataTools element = ToolsLinkedList.get(i);
+            DataTools element = toolsLinkedList.get(i);
             if (element.getID().equalsIgnoreCase(toolsID)) {
                 //TODO 增加日志信息
                 return element;
@@ -45,14 +46,14 @@ public class ToolsManager {
         DataTools dataTools = new DataTools();
 
         dataTools.setActivityArrayList(new ArrayList<>());
-        dataTools.setToolsDescription(description);
+        dataTools.setDescription(description);
         dataTools.setID(id);
         dataTools.setActivityID(activityID);
 
         //向输入链表中添加输入对象
         DataTools toolsEle = getToolsByID(id);
         if (toolsEle == null) {
-            ToolsLinkedList.add(dataTools);
+            toolsLinkedList.add(dataTools);
         } else {
             //TODO 增加交互性信息
         }
@@ -73,7 +74,7 @@ public class ToolsManager {
     public DataTools setActTools(String toolsDesc) {
         DataTools dataTools = new DataTools();
 
-        dataTools.setToolsDescription(toolsDesc);
+        dataTools.setDescription(toolsDesc);
 
         return dataTools;
     }
@@ -91,7 +92,7 @@ public class ToolsManager {
         //x.x.x.x=活动ID.工具ID "描述"
         String destString = dataTools.getActivityID().toString() + "."
                 + dataTools.getID() + "\t"
-                + dataTools.getToolsDescription();
+                + dataTools.getDescription() + "\r\n";
         fileWriter.append(destString, 0, destString.length());
 
         fileWriter.flush();
@@ -192,5 +193,42 @@ public class ToolsManager {
         bufferedReader.close();
 
         return true;
+    }
+
+    /**
+     * 展示所有项目工具
+     */
+    public static void displayTools() {
+        int outputCount = toolsLinkedList.size();
+
+        for (int i = 0; i < outputCount; i++) {
+            DataTools dataTools = toolsLinkedList.get(i);
+            log.info(dataTools.getID() + ":" + dataTools.getDescription());
+        }
+    }
+
+    /**
+     * 根据指定工具ID，展示使用该工具的所有项目活动
+     *
+     * @param toolID 指定工具ID
+     */
+    public static void displayActivities(String toolID) {
+        DataTools dataTools = getToolsByID(toolID);
+        if (dataTools == null) {
+            //TODO 增加交互信息
+            log.info("No tool with ID " + toolID + " is found.");
+            return;
+        }
+
+        ArrayList activityArrayList = dataTools.getActivityArrayList();
+        int activityCount = activityArrayList.size();
+        for (int i = 0; i < activityCount; i++) {
+            DataActivity dataActivity = (DataActivity) activityArrayList.get(i);
+            log.info(dataActivity.getID() + ":" + dataActivity.getDescription());
+        }
+        log.info("一共" + activityCount + " 个活动");
+
+        return;
+
     }
 }
