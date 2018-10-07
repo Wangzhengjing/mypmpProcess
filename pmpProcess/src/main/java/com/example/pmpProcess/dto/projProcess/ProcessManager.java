@@ -151,6 +151,11 @@ public class ProcessManager {
      */
     public static void displayActivities(String processID) {
         DataProcess process = getProcessByID(processID);
+        if (process == null) {
+            //TODO 增加交互信息
+            log.info("指定ID为" + processID + "不存在，请检查.");
+            return;
+        }
         ArrayList activityList = process.getActivityArrayList();
 
         int activityCount = activityList.size();
